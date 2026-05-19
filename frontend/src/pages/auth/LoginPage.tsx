@@ -15,21 +15,28 @@ const DEMO_USERS = [
   { role: "Employee", email: "employee@atomquest.app", password: "Employee@123" },
 ];
 
+// Module-level fallback so it never lives inside render — immune to any React lifecycle issue
+const FALLBACK_CAPS = { auth: { password: true, microsoft_sso: false }, demo_mode: false } as const;
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const setAuth = useAuthStore((s) => s.setAuth);
-  const { data: capabilities, isLoading: loadingCapabilities } = useQuery({
+  const { data: rawCaps, isLoading: loadingCapabilities } = useQuery({
     queryKey: ["systemCapabilities"],
     queryFn: systemApi.capabilities,
-    retry: 1,
-    retryDelay: 800,
-    staleTime: 0,
+    retry: false,          // don't retry — fail fast and fall back
+    staleTime: Infinity,   // don't refetch on window focus
+    throwOnError: false,   // NEVER throw during render — handle gracefully
   });
 
-  // Always guaranteed to be a valid object — never undefined.
-  // Falls back to password-only mode when backend is unreachable.
-  const FALLBACK_CAPS = { auth: { password: true, microsoft_sso: false }, demo_mode: false };
-  const caps = capabilities ?? FALLBACK_CAPS;
+  // Deep-safe merge: even if API returns { auth: null } this won't crash
+  const caps = {
+    auth: {
+      password:       rawCaps?.auth?.password       ?? FALLBACK_CAPS.auth.password,
+      microsoft_sso:  rawCaps?.auth?.microsoft_sso  ?? FALLBACK_CAPS.auth.microsoft_sso,
+    },
+    demo_mode: rawCaps?.demo_mode ?? FALLBACK_CAPS.demo_mode,
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +60,7 @@ export default function LoginPage() {
   const ssoErrorMessage =
     ssoError ? (SSO_ERROR_MESSAGES[ssoError] ?? `Microsoft sign-in error: ${ssoError}`) : null;
 
-  // Show loader only while fetching — never block forever
+  // Brief loader while the first fetch is in-flight; never blocks on error
   if (loadingCapabilities) return <PageLoader />;
 
   const handleSubmit = async (e: React.FormEvent) => {
