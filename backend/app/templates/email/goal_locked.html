@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Hi <strong>{{ employee_name }}</strong>,</p>
+<p>
+  Your goals for <strong>{{ cycle_name }}</strong> have been <strong>locked</strong>.
+  This means the goal sheet is now finalised for the cycle period.
+</p>
+<table class="fact-table">
+  <tr><td>Cycle</td><td>{{ cycle_name }}</td></tr>
+  <tr><td>Locked By</td><td>{{ manager_name }}</td></tr>
+  <tr><td>Locked At</td><td>{{ locked_at }}</td></tr>
+  <tr><td>Status</td><td><span class="status-badge status-locked">LOCKED</span></td></tr>
+</table>
+<p>
+  Achievement entries during the quarterly check-in windows are still open.
+  Please track your progress regularly.
+</p>
+<a class="btn" href="{{ app_url }}/goals">View My Goals</a>
+{% endblock %}

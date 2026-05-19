@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ subject }}</title>
+  <style>
+    body { margin: 0; padding: 0; background: #f4f6f9; font-family: 'Segoe UI', Arial, sans-serif; }
+    .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .header { background: linear-gradient(135deg, #1a56db 0%, #0e9f6e 100%); padding: 32px 40px; }
+    .header h1 { margin: 0; color: #fff; font-size: 22px; font-weight: 600; }
+    .header p { margin: 4px 0 0; color: rgba(255,255,255,.8); font-size: 13px; }
+    .body { padding: 32px 40px; }
+    .body p { color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 16px; }
+    .fact-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .fact-table td { padding: 10px 14px; font-size: 14px; border-bottom: 1px solid #e5e7eb; }
+    .fact-table td:first-child { color: #6b7280; font-weight: 500; width: 38%; }
+    .fact-table td:last-child { color: #111827; font-weight: 600; }
+    .status-badge { display: inline-block; padding: 3px 12px; border-radius: 99px; font-size: 12px; font-weight: 700; letter-spacing: .5px; }
+    .status-submitted  { background: #dbeafe; color: #1e40af; }
+    .status-approved   { background: #d1fae5; color: #065f46; }
+    .status-returned   { background: #fef3c7; color: #92400e; }
+    .status-locked     { background: #ede9fe; color: #4c1d95; }
+    .status-escalation { background: #fee2e2; color: #7f1d1d; }
+    .btn { display: inline-block; margin-top: 24px; padding: 12px 28px; background: #1a56db; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 600; }
+    .reason-box { background: #fff7ed; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 14px; color: #78350f; }
+    .footer { background: #f9fafb; padding: 20px 40px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>AtomQuest</h1>
+      <p>Goal Setting &amp; Performance Tracking</p>
+    </div>
+    <div class="body">
+      {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+      &copy; {{ year }} AtomQuest &middot; This is an automated notification &middot; Do not reply
+    </div>
+  </div>
+</body>
+</html>

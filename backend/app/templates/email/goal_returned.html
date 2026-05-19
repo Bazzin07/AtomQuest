@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Hi <strong>{{ employee_name }}</strong>,</p>
+<p>
+  Your goal sheet for <strong>{{ cycle_name }}</strong> has been returned by
+  your manager <strong>{{ manager_name }}</strong> for revision.
+</p>
+<table class="fact-table">
+  <tr><td>Goal</td><td>{{ goal_title }}</td></tr>
+  <tr><td>Cycle</td><td>{{ cycle_name }}</td></tr>
+  <tr><td>Returned By</td><td>{{ manager_name }}</td></tr>
+  <tr><td>Status</td><td><span class="status-badge status-returned">RETURNED</span></td></tr>
+</table>
+{% if reason %}
+<p><strong>Manager's feedback:</strong></p>
+<div class="reason-box">{{ reason }}</div>
+{% endif %}
+<p>
+  Please update your goal sheet based on the feedback above and resubmit.
+</p>
+<a class="btn" href="{{ app_url }}/goals">Edit My Goals</a>
+{% endblock %}

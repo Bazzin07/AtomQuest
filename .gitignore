@@ -1,0 +1,98 @@
+# ═══════════════════════════════════════════════════════════════
+#  AtomQuest .gitignore
+#  Only frontend/src and backend/app are tracked.
+#  Everything else listed below is excluded.
+# ═══════════════════════════════════════════════════════════════
+
+# ── Secrets / env files (NEVER commit) ───────────────────────
+.env
+*.env
+**/.env
+frontend/.env
+backend/.env
+!**/.env.example       # DO NOT keep even examples
+**/.env.example
+**/.env.local
+**/.env.production
+**/.env.development
+
+# ── Python runtime ────────────────────────────────────────────
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+backend/*.egg-info/
+backend/atomquest_backend.egg-info/
+
+# ── Python virtual env ────────────────────────────────────────
+.venv/
+venv/
+backend/.venv/
+
+# ── Test files & caches ───────────────────────────────────────
+backend/tests/
+.pytest_cache/
+**/.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# ── Linting caches ────────────────────────────────────────────
+.ruff_cache/
+**/.ruff_cache/
+.mypy_cache/
+
+# ── Node / frontend build artifacts ──────────────────────────
+node_modules/
+**/node_modules/
+frontend/dist/
+frontend/build/
+*.tsbuildinfo
+
+# ── Terraform (infra code — not for app repo) ─────────────────
+terraform/
+*.tf
+*.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# ── CI/CD workflows ───────────────────────────────────────────
+.github/
+
+# ── AI / agent tooling ────────────────────────────────────────
+.agent/
+.claude/
+.gemini/
+graphify-out/
+
+# ── Docs / reports / PDFs ─────────────────────────────────────
+docs/
+*.pdf
+*.md.resolved
+DEPLOYMENT.md
+
+# ── IDE / editor ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Docker (local only) ───────────────────────────────────────
+docker-compose.yml
+.dockerenv
+
+# ── Misc ──────────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak
+*.orig
+.cache/

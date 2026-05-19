@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Hi <strong>{{ manager_name }}</strong>,</p>
+<p>
+  <strong>{{ employee_name }}</strong> has submitted their goal sheet for <strong>{{ cycle_name }}</strong>
+  and is awaiting your review and approval.
+</p>
+<table class="fact-table">
+  <tr><td>Employee</td><td>{{ employee_name }}</td></tr>
+  <tr><td>Department</td><td>{{ department }}</td></tr>
+  <tr><td>Cycle</td><td>{{ cycle_name }}</td></tr>
+  <tr><td>Goals Submitted</td><td>{{ goal_count }}</td></tr>
+  <tr><td>Status</td><td><span class="status-badge status-submitted">SUBMITTED</span></td></tr>
+</table>
+<p>Please review the goal sheet at your earliest convenience.</p>
+<a class="btn" href="{{ app_url }}/goals/team">Review Goals</a>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Hi <strong>{{ recipient_name }}</strong>,</p>
+<p>
+  An escalation has been triggered for <strong>{{ target_name }}</strong>
+  in cycle <strong>{{ cycle_name }}</strong>.
+</p>
+<table class="fact-table">
+  <tr><td>Employee</td><td>{{ target_name }}</td></tr>
+  <tr><td>Cycle</td><td>{{ cycle_name }}</td></tr>
+  <tr><td>Event Type</td><td><span class="status-badge status-escalation">{{ event_type }}</span></td></tr>
+  <tr><td>Threshold</td><td>{{ threshold_days }} days overdue</td></tr>
+  <tr><td>Escalation Level</td><td>Level {{ escalation_level }}</td></tr>
+</table>
+<div class="reason-box">{{ detail }}</div>
+<p>
+  Please take immediate action to resolve this escalation. If already resolved,
+  mark it as resolved in the system.
+</p>
+<a class="btn" href="{{ app_url }}/admin/escalations">View Escalations</a>
+{% endblock %}
