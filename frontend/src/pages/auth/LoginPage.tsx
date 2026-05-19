@@ -18,14 +18,18 @@ const DEMO_USERS = [
 export default function LoginPage() {
   const navigate = useNavigate();
   const setAuth = useAuthStore((s) => s.setAuth);
-  const { data: capabilities, isLoading: loadingCapabilities, isError: capabilitiesError } = useQuery({
+  const { data: capabilities, isLoading: loadingCapabilities } = useQuery({
     queryKey: ["systemCapabilities"],
     queryFn: systemApi.capabilities,
     retry: 1,
     retryDelay: 800,
-    // Never block the UI forever — treat missing backend as "show password form"
     staleTime: 0,
   });
+
+  // Always guaranteed to be a valid object — never undefined.
+  // Falls back to password-only mode when backend is unreachable.
+  const FALLBACK_CAPS = { auth: { password: true, microsoft_sso: false }, demo_mode: false };
+  const caps = capabilities ?? FALLBACK_CAPS;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,12 +53,8 @@ export default function LoginPage() {
   const ssoErrorMessage =
     ssoError ? (SSO_ERROR_MESSAGES[ssoError] ?? `Microsoft sign-in error: ${ssoError}`) : null;
 
-  // When backend is offline/not yet deployed — show a brief loader only, never block forever
+  // Show loader only while fetching — never block forever
   if (loadingCapabilities) return <PageLoader />;
-
-  // Fallback caps when backend unreachable: show password form, hide SSO
-  const effectiveCaps = capabilities ?? (capabilitiesError ? { auth: { password: true, microsoft_sso: false }, demo_mode: false } : null);
-  if (!effectiveCaps) return <PageLoader />;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,7 +170,7 @@ export default function LoginPage() {
               Sign in to continue into the goal operations workspace.
             </p>
 
-            {effectiveCaps?.auth.password && (
+            {caps.auth.password && (
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                 {ssoErrorMessage && (
                   <div className="flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2.5 text-sm text-amber-800" role="alert">
@@ -230,22 +230,22 @@ export default function LoginPage() {
               </form>
             )}
 
-            {effectiveCaps?.auth.microsoft_sso && (
-              <div className={effectiveCaps?.auth.password ? "mt-4" : "mt-6"}>
+            {caps.auth.microsoft_sso && (
+              <div className={caps.auth.password ? "mt-4" : "mt-6"}>
                 <Button type="button" variant="outline" className="w-full" onClick={handleMicrosoftSignIn} disabled={loading}>
                   {loading ? "Preparing..." : "Sign in with Microsoft"}
                 </Button>
               </div>
             )}
 
-            {!effectiveCaps?.auth.password && !effectiveCaps?.auth.microsoft_sso && (
+            {!caps.auth.password && !caps.auth.microsoft_sso && (
               <div className="mt-6 rounded-lg bg-[var(--secondary)] px-4 py-3 text-sm text-[var(--muted-foreground)]">
                 No authentication method is enabled for this environment.
               </div>
             )}
           </div>
 
-          {effectiveCaps?.demo_mode && (
+          {caps.demo_mode && (
           <div className="mt-4 rounded-lg border border-[var(--border)] bg-white/80 p-3">
             <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-[var(--muted-foreground)]">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
