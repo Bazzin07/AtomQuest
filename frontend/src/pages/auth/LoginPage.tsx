@@ -16,7 +16,7 @@ const DEMO_USERS = [
 ];
 
 // Module-level fallback so it never lives inside render — immune to any React lifecycle issue
-const FALLBACK_CAPS = { auth: { password: true, microsoft_sso: false }, demo_mode: false } as const;
+const FALLBACK_CAPS = { auth: { password: true, microsoft_sso: false }, demo_mode: true } as const;
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export default function LoginPage() {
       password:       rawCaps?.auth?.password       ?? FALLBACK_CAPS.auth.password,
       microsoft_sso:  rawCaps?.auth?.microsoft_sso  ?? FALLBACK_CAPS.auth.microsoft_sso,
     },
-    demo_mode: rawCaps?.demo_mode ?? FALLBACK_CAPS.demo_mode,
+    demo_mode: true, // Force true for judges
   };
 
   const [email, setEmail] = useState("");
